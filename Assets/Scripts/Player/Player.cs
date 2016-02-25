@@ -51,8 +51,15 @@ public class Player : MonoBehaviour {
 	}
 
 	void OnCollisionStay2D(Collision2D other) {
-		if (other.gameObject.CompareTag("Solid"))
-			onGround = true;
+		Collider2D collider = other.collider;
+
+		if (other.gameObject.CompareTag("Solid")) {
+			Vector3 contact = other.contacts[0].point;
+			Bounds bounds = collider.bounds;
+
+			if (contact.y >= bounds.max.y && contact.x >= bounds.min.x && contact.x <= bounds.max.x)
+				onGround = true;
+		}
 	}
 
 	void OnCollisionExit2D(Collision2D other) {
@@ -82,30 +89,6 @@ public class Player : MonoBehaviour {
 		if (onGround) {
 			animator.SetBool("jumping", false);
 
-			if (controller.walking != 0)
-				transform.localScale = new Vector3(controller.walking, 1, 1);
-
-			if (controller.walking != 0 && controller.stance == 2) {
-				velX = speed * controller.walking;
-				animator.SetBool("walking", true);
-				PlayOnce(2, controller.sWalking);
-				KeepPlaying(3);
-			}
-			else {
-				velX = 0f;
-				animator.SetBool("walking", false);
-				aSources[3].Stop();
-			}
-
-			if (controller.stance == 1) {
-				animator.SetBool("crouching", true);
-				PlayOnce(2, controller.sStance);
-			}
-			else {
-				animator.SetBool("crouching", false);
-				PlayOnce(2, controller.sStance);
-			}
-
 			if (controller.jumping) {
 				rb.AddForce(new Vector2(0, jumpForce * 100));
 
@@ -117,6 +100,30 @@ public class Player : MonoBehaviour {
 		}
 		else
 			animator.SetBool("jumping", true);
+
+		if (controller.walking != 0)
+			transform.localScale = new Vector3(controller.walking, 1, 1);
+
+		if (controller.walking != 0 && controller.stance == 2) {
+			velX = speed * controller.walking;
+			animator.SetBool("walking", true);
+			PlayOnce(2, controller.sWalking);
+			KeepPlaying(3);
+		}
+		else {
+			velX = 0f;
+			animator.SetBool("walking", false);
+			aSources[3].Stop();
+		}
+
+		if (controller.stance == 1) {
+			animator.SetBool("crouching", true);
+			PlayOnce(2, controller.sStance);
+		}
+		else {
+			animator.SetBool("crouching", false);
+			PlayOnce(2, controller.sStance);
+		}
 
 		if (weapon.IsAuto()) {
 			if (controller.shooting && weapon.GetAmmo() > 0)
