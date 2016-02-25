@@ -1,0 +1,73 @@
+ ___        __       
+|_ _|_ __  / _| ___  
+ | || '_ \| |_ / _ \ 
+ | || | | |  _| (_) |
+|___|_| |_|_|  \___/ 
+
+
+--######### Important info about Jimmy "the defender of justice" if you want to use his scripts: ----------------
+
+-- Jimmy Keys:
+	#-(a,d,s, space): left, right, down, jump.
+	#-(Left mouse): shoot.
+	#-(r): reload a gun or rifle.
+	#-(f): call the elevator switching.
+	#-(g): grenade.
+	#-(1): equip a gun or.
+	#-(2): equip a rifle.
+
+-Jimmy only can equip a gun "in stop mode".
+-Jimmy only can shoot "in stop mode".
+-Jimmy only can climb "in stop mode".
+-Jimmy only can call an air drone "in stop mode".
+-Jimmy only can reload if is "in stop mode".
+-Jimmy only can use a grenade "in stop mode" and "armed" with gun or rifle.
+-Jimmy can call an elevator "in stop mode".
+
+-- Scripts associated:
+	#-"Example_Motion_Controller.cs"
+
+-- Prefabs associated: 
+	#-"Bullet_Jimmy"
+	#-"Grenade"
+	
+# Important, Jimmy only can climb if exists "climb points" (it is very simple) go to: https://www.youtube.com/watch?v=YSfT-3CIKFY
+
+-Note: The Jimmy scripts are associated to Jimmy Prefab into Jimmy_body (Jimmy / Jimmy_body).
+
+
+
+
+--######### About Enemy: ----------------
+
+-- He contains "Area_in" (activate enemy) and "Area_out" (deactivate enemy).
+-- This is an simple example of static enemy, in this case he only can shoot to the left side, he can not flip.
+-- He is killed with one shot.
+-- I have included the same enemy but without the black borders, if you want to use it he is in the subfolder (Enemy / No_Black).
+
+-- Scripts associated:
+	#-"Enemy_Attack_Controller.cs"
+	#-"Enemy_Activation.cs"
+	
+-- Prefabs associated:
+	#-"Bullet_complex"
+
+-- Note: The Enemy scripts are associated to Enemy Prefab into Bot (Enemy or Enmy_Multi_Floor / Bot).
+
+
+--######### About Elevator: ----------------
+
+-- When Jimmy is near to the "Switch" an exclamation will be appeared, in this case you can press "f" to call the elevator.
+-- The elevator down automatically after a delay time, this delay time is controlled with a public var ("int delay" in #- "Elevator_Controller.cs").
+-- The elevator part that goes up and down is (Elevator_Group / Base).
+-- You can controll the vertically moviment with "Limit_Up" and "Limit_down", the elevator stops when is triggered by them.
+
+-- Scripts associated:
+	#-"Elevator_Controller.cs"
+	#-"Switch_Elevator_Controller.cs"
+	
+-Note: The Elevator scripts are associated to Elevator Prefab into Base (Elevator_Group / Base).
+
+
+
+
