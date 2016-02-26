@@ -3,18 +3,17 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour {
 	public int walking;
-	public int stance = 2;
+	public int stance;
 	public bool jumping;
 	public bool shooting;
 	public bool reloading;
 	public bool sWalking;
-	public bool sStance;
 	public bool sShooting;
 
 	void Update() {
-		walking = 0;
+		walking = stance = 0;
 		jumping = shooting = reloading = false;
-		sWalking = sStance = sShooting = false;
+		sWalking = sShooting = false;
 
 		if (Input.GetKey(KeyCode.D))
 			walking = 1;
@@ -24,19 +23,11 @@ public class PlayerController : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.A))
 			sWalking = true;
 
-		if (Input.GetKeyDown(KeyCode.W)) {
-			if (stance < 2) {
-				stance++;
-				sStance = true;
-			}
-		}
+		if (Input.GetKeyDown(KeyCode.W))
+			stance = 1;
 
-		if (Input.GetKeyDown(KeyCode.S)) {
-			if (stance > 1) {
-				stance--;
-				sStance = true;
-			}
-		}
+		if (Input.GetKeyDown(KeyCode.S))
+			stance = -1;
 
 		if (Input.GetKeyDown(KeyCode.K))
 			jumping = true;

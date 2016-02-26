@@ -13,6 +13,7 @@ public class Player : MonoBehaviour {
 	private Animator animator;
 	private float velX;
 	private bool onGround;
+	private int stance;
 	private AudioSource[] aSources;
 	private bool[] played;
 	private Weapon weapon;
@@ -21,6 +22,7 @@ public class Player : MonoBehaviour {
 		controller = GetComponent<PlayerController>();
 		rb = GetComponent<Rigidbody2D>();
 		animator = GetComponent<Animator>();
+		stance = 2;
 
 		aSources = new AudioSource[clips.Length];
 		played = new bool[clips.Length];
@@ -85,16 +87,30 @@ public class Player : MonoBehaviour {
 			aSources[i].Play();
 	}
 
-	void MovementAndAnimation() {
+	void StandUp() {
+		if (stance < 2) {
+			stance = 2;
+			animator.SetBool("crouching", false);
+		}
+	}
+
+	void ControlAndAnimation() {
 		if (onGround) {
 			animator.SetBool("jumping", false);
 
 			if (controller.jumping) {
 				rb.AddForce(new Vector2(0, jumpForce * 100));
+				StandUp();
+			}
 
-				if (controller.stance < 2) {
-					controller.stance = 2;
+			if (controller.walking == 0) {
+				if (stance == 1) {
+					animator.SetBool("crouching", true);
+					PlayOnce(2, controller.stance != 0);
+				}
+				else {
 					animator.SetBool("crouching", false);
+					PlayOnce(2, controller.stance != 0);
 				}
 			}
 		}
@@ -104,25 +120,21 @@ public class Player : MonoBehaviour {
 		if (controller.walking != 0)
 			transform.localScale = new Vector3(controller.walking, 1, 1);
 
-		if (controller.walking != 0 && controller.stance == 2) {
-			velX = speed * controller.walking;
+		if (controller.walking != 0) {
+			velX = Mathf.MoveTowards(rb.velocity.x, speed * controller.walking, 50f * Time.deltaTime);
+
 			animator.SetBool("walking", true);
 			PlayOnce(2, controller.sWalking);
 			KeepPlaying(3);
+			StandUp();
 		}
 		else {
-			velX = 0f;
-			animator.SetBool("walking", false);
-			aSources[3].Stop();
-		}
+			velX = Mathf.MoveTowards(rb.velocity.x, 0f, 4f * Time.deltaTime);
 
-		if (controller.stance == 1) {
-			animator.SetBool("crouching", true);
-			PlayOnce(2, controller.sStance);
-		}
-		else {
-			animator.SetBool("crouching", false);
-			PlayOnce(2, controller.sStance);
+			if (rb.velocity.x == 0) {
+				animator.SetBool("walking", false);
+				aSources[3].Stop();
+			}
 		}
 
 		if (weapon.IsAuto()) {
@@ -141,11 +153,24 @@ public class Player : MonoBehaviour {
 
 		if (controller.reloading)
 			animator.SetBool("reloading", true);
-
+		
 		rb.velocity = new Vector2(velX, rb.velocity.y);
 	}
 
+	void StanceUpdate() {
+		if (controller.stance == 1) {
+			if (stance < 2)
+				stance++;
+		}
+
+		if (controller.stance == -1) {
+			if (stance > 1)
+				stance--;
+		}
+	}
+
 	void Update() {
-		MovementAndAnimation();
+		StanceUpdate();
+		ControlAndAnimation();
 	}
 }
