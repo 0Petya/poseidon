@@ -95,6 +95,8 @@ public class Player : MonoBehaviour {
 	}
 
 	void ControlAndAnimation() {
+		float absVelX = Mathf.Abs(rb.velocity.x);
+
 		if (onGround) {
 			animator.SetBool("jumping", false);
 
@@ -131,7 +133,7 @@ public class Player : MonoBehaviour {
 		else {
 			velX = Mathf.MoveTowards(rb.velocity.x, 0f, 4f * Time.deltaTime);
 
-			if (rb.velocity.x == 0) {
+			if (absVelX < 0.1f) {
 				animator.SetBool("walking", false);
 				aSources[3].Stop();
 			}
