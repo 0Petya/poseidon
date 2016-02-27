@@ -8,20 +8,18 @@ abstract class AbstractWeapon : MonoBehaviour, Weapon {
 	public AudioClip[] clips = null;
 
 	protected int ammo;
-	protected Player player;
-	protected PlayerController controller;
+	protected Animator animator;
 	protected AudioSource[] aSources;
 
 	protected void Start() {
 		ammo = maxAmmo;
+		animator = GetComponent<Animator>();
 		Instantiate(ammoCount, new Vector2(0, 0), Quaternion.identity);
-		player = GameObject.FindObjectOfType<Player>();
-		controller = player.GetComponent<PlayerController>();
 
 		aSources = new AudioSource[clips.Length];
 		for (int i = 0; i < clips.Length; i++) {
 			GameObject child = new GameObject("WeaponAudio");
-			child.transform.parent = player.transform;
+			child.transform.parent = gameObject.transform;
 			child.transform.localPosition = Vector3.zero;
 			aSources[i] = child.AddComponent<AudioSource>() as AudioSource;
 			aSources[i].clip = clips[i];
@@ -34,7 +32,18 @@ abstract class AbstractWeapon : MonoBehaviour, Weapon {
 		return ammo;
 	}
 
-	abstract public void Shoot();
+	public void Shoot(bool trigger) {
+		if (trigger)
+			animator.SetBool("shooting", true);
+		else
+			animator.SetBool("shooting", false);
+	}
+
+	public void Fire() {
+		FireWeapon();
+	}
+
+	abstract public void FireWeapon();
 
 	public void DryFire() {
 		aSources[1].Play();
@@ -42,9 +51,11 @@ abstract class AbstractWeapon : MonoBehaviour, Weapon {
 
 	public void BeginReload() {
 		aSources[2].Play();
+		animator.SetBool("reloading", true);
 	}
 
 	public void EndReload() {
 		ammo = maxAmmo;
+		animator.SetBool("reloading", false);
 	}
 }

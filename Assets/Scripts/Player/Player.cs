@@ -35,21 +35,10 @@ public class Player : MonoBehaviour {
 			played[i] = false;
 		}
 
-		currentWeapon = Instantiate(currentWeapon, new Vector2(0, 0), Quaternion.identity) as GameObject;
+		currentWeapon = Instantiate(currentWeapon, transform.position, Quaternion.identity) as GameObject;
+		currentWeapon.transform.parent = gameObject.transform;
+		currentWeapon.transform.localPosition = Vector3.zero;
 		weapon = currentWeapon.GetComponent<Weapon>();
-	}
-
-	void BeginReload() {
-		weapon.BeginReload();
-	}
-
-	void EndReload() {
-		weapon.EndReload();
-		animator.SetBool("reloading", false);
-	}
-
-	void Shoot() {
-		weapon.Shoot();
 	}
 
 	void OnCollisionStay2D(Collision2D other) {
@@ -75,6 +64,11 @@ public class Player : MonoBehaviour {
 
 	void SecondStep() {
 		aSources[1].Play();
+	}
+
+	void EndReload() {
+		weapon.EndReload();
+		animator.SetBool("reloading", false);
 	}
 
 	void PlayOnce(int i, bool start) {
@@ -140,21 +134,26 @@ public class Player : MonoBehaviour {
 		}
 
 		if (weapon.IsAuto()) {
-			if (controller.shooting && weapon.GetAmmo() > 0)
+			if (controller.shooting && weapon.GetAmmo() > 0) {
 				animator.SetBool("shooting", true);
+				weapon.Shoot(true);
+			}
 			else {
 				if (animator.GetBool("shooting") && weapon.GetAmmo() == 0)
 					weapon.DryFire();
 
 				animator.SetBool("shooting", false);
+				weapon.Shoot(false);
 			}
 
 			if (controller.sShooting && weapon.GetAmmo() == 0)
 				weapon.DryFire();
 		}
 
-		if (controller.reloading)
+		if (controller.reloading) {
 			animator.SetBool("reloading", true);
+			weapon.BeginReload();
+		}
 		
 		rb.velocity = new Vector2(velX, rb.velocity.y);
 	}

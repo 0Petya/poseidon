@@ -4,7 +4,8 @@ using System.Collections;
 public interface Weapon {
 	bool IsAuto();
 	int GetAmmo();
-	void Shoot();
+	void Shoot(bool trigger);
+	void Fire();
 	void DryFire();
 	void BeginReload();
 	void EndReload();
