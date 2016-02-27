@@ -13,6 +13,9 @@ public class Player : MonoBehaviour {
 	private Animator animator;
 	private float velX;
 	private bool onGround;
+	private bool onWallL;
+	private bool onWallR;
+	private string lastCol;
 	private int stance;
 	private AudioSource[] aSources;
 	private bool[] played;
@@ -48,14 +51,32 @@ public class Player : MonoBehaviour {
 			Vector3 contact = other.contacts[0].point;
 			Bounds bounds = collider.bounds;
 
-			if (contact.y >= bounds.max.y && contact.x >= bounds.min.x && contact.x <= bounds.max.x)
+			if (contact.y >= bounds.max.y && contact.x >= bounds.min.x && contact.x <= bounds.max.x) {
 				onGround = true;
+				lastCol = "ground";
+			}
+
+			if (!onGround && contact.y > bounds.min.y && contact.y < bounds.max.y) {
+				if (contact.x >= bounds.max.x)
+					onWallL = true;
+
+				if (contact.x <= bounds.min.x)
+					onWallR = true;
+			}
 		}
 	}
 
+	IEnumerator OffWall() {
+		yield return new WaitForSeconds(0.01f);
+		onWallL = false;
+		onWallR = false;
+	}
+
 	void OnCollisionExit2D(Collision2D other) {
-		if (other.gameObject.CompareTag("Solid"))
+		if (other.gameObject.CompareTag("Solid")) {
 			onGround = false;
+			StartCoroutine(OffWall());
+		}
 	}
 
 	void FirstStep() {
@@ -88,9 +109,29 @@ public class Player : MonoBehaviour {
 		}
 	}
 
-	void ControlAndAnimation() {
-		float absVelX = Mathf.Abs(rb.velocity.x);
+	void WallControl() {
+		if (onWallL) {
+			if (controller.walking > 0 && controller.jumping) {
+				if (lastCol == "right" || lastCol == "ground")
+					rb.velocity = new Vector2(rb.velocity.x, 0);
 
+				rb.AddForce(new Vector2(100, jumpForce * 75));
+				lastCol = "left";
+			}
+		}
+
+		if (onWallR) {
+			if (controller.walking < 0 && controller.jumping) {
+				if (lastCol == "left" || lastCol == "ground")
+					rb.velocity = new Vector2(rb.velocity.x, 0);
+
+				rb.AddForce(new Vector2(-100, jumpForce * 75));
+				lastCol = "right";
+			}
+		}
+	}
+
+	void GroundControl() {
 		if (onGround) {
 			animator.SetBool("jumping", false);
 
@@ -112,6 +153,13 @@ public class Player : MonoBehaviour {
 		}
 		else
 			animator.SetBool("jumping", true);
+	}
+
+	void ControlAndAnimation() {
+		float absVelX = Mathf.Abs(rb.velocity.x);
+
+		GroundControl();
+		WallControl();
 
 		if (controller.walking != 0)
 			transform.localScale = new Vector3(controller.walking, 1, 1);
