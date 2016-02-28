@@ -58,4 +58,11 @@ abstract class AbstractWeapon : MonoBehaviour, Weapon {
 		ammo = maxAmmo;
 		animator.SetBool("reloading", false);
 	}
+
+	public void DisableAnim(bool disable) {
+		if (disable)
+			animator.SetLayerWeight(1, 0f);
+		else
+			animator.SetLayerWeight(1, 100f);
+	}
 }

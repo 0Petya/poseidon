@@ -9,4 +9,5 @@ public interface Weapon {
 	void DryFire();
 	void BeginReload();
 	void EndReload();
+	void DisableAnim(bool disable);
 }

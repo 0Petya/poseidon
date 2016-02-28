@@ -4,6 +4,7 @@ using System.Collections;
 public class PlayerController : MonoBehaviour {
 	public int walking;
 	public int stance;
+	public bool down;
 	public bool jumping;
 	public bool shooting;
 	public bool reloading;
@@ -12,7 +13,7 @@ public class PlayerController : MonoBehaviour {
 
 	void Update() {
 		walking = stance = 0;
-		jumping = shooting = reloading = false;
+		down = jumping = shooting = reloading = false;
 		sWalking = sShooting = false;
 
 		if (Input.GetKey(KeyCode.D))
@@ -25,6 +26,9 @@ public class PlayerController : MonoBehaviour {
 
 		if (Input.GetKeyDown(KeyCode.W))
 			stance = 1;
+
+		if (Input.GetKey(KeyCode.S))
+			down = true;
 
 		if (Input.GetKeyDown(KeyCode.S))
 			stance = -1;
