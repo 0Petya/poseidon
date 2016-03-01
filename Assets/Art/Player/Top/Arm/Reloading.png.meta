@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: d3b907077d141db40a90b09404c313f3
-timeCreated: 1456452067
+timeCreated: 1456807926
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -64,16 +64,16 @@ TextureImporter:
         y: 0
         width: 100
         height: 100
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.4, y: 0.52}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -16, y: 8}
-        - {x: -16, y: -8}
-        - {x: 14, y: -8}
-        - {x: 16, y: -7}
-        - {x: 16, y: 6}
-        - {x: 14, y: 8}
+      - - {x: -6, y: 6}
+        - {x: -6, y: -10}
+        - {x: 24, y: -10}
+        - {x: 26, y: -9}
+        - {x: 26, y: 4}
+        - {x: 24, y: 6}
     - name: Reloading_1
       rect:
         serializedVersion: 2
@@ -81,16 +81,18 @@ TextureImporter:
         y: 0
         width: 100
         height: 100
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.4, y: 0.52}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -24, y: 2}
-        - {x: -24, y: -14}
-        - {x: -19, y: -20}
-        - {x: 0, y: -20}
-        - {x: 0, y: 8}
-        - {x: -22, y: 8}
+      - - {x: -7, y: 6}
+        - {x: -18, y: -1}
+        - {x: -18, y: -14}
+        - {x: -17, y: -19}
+        - {x: -13, y: -22}
+        - {x: 10, y: -22}
+        - {x: 10, y: 0}
+        - {x: 7, y: 6}
     - name: Reloading_2
       rect:
         serializedVersion: 2
@@ -98,17 +100,16 @@ TextureImporter:
         y: 0
         width: 100
         height: 100
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.4, y: 0.52}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -20, y: -12}
-        - {x: -16, y: -16}
-        - {x: 11, y: -16}
-        - {x: 16, y: -15}
-        - {x: 16, y: 3}
-        - {x: 9, y: 4}
-        - {x: -20, y: 4}
+      - - {x: -10, y: 6}
+        - {x: -10, y: -17}
+        - {x: -8, y: -18}
+        - {x: 26, y: -18}
+        - {x: 26, y: -2}
+        - {x: 20, y: 6}
     - name: Reloading_3
       rect:
         serializedVersion: 2
@@ -116,17 +117,17 @@ TextureImporter:
         y: 0
         width: 100
         height: 100
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.4, y: 0.52}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -5, y: 8}
-        - {x: -16, y: 8}
-        - {x: -16, y: -5}
-        - {x: -13, y: -8}
-        - {x: 20, y: -8}
-        - {x: 20, y: 3}
-        - {x: 18, y: 4}
+      - - {x: 5, y: 6}
+        - {x: -6, y: 6}
+        - {x: -6, y: -7}
+        - {x: -3, y: -10}
+        - {x: 30, y: -10}
+        - {x: 30, y: 1}
+        - {x: 28, y: 2}
     - name: Reloading_4
       rect:
         serializedVersion: 2
@@ -134,17 +135,17 @@ TextureImporter:
         y: 0
         width: 100
         height: 100
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.4, y: 0.52}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -13, y: 12}
-        - {x: -16, y: 10}
-        - {x: -16, y: -4}
-        - {x: 1, y: -4}
-        - {x: 23, y: -1}
-        - {x: 24, y: 2}
-        - {x: 24, y: 12}
+      - - {x: -3, y: 10}
+        - {x: -6, y: 8}
+        - {x: -6, y: -6}
+        - {x: 11, y: -6}
+        - {x: 33, y: -3}
+        - {x: 34, y: 0}
+        - {x: 34, y: 10}
     - name: Reloading_5
       rect:
         serializedVersion: 2
@@ -152,16 +153,16 @@ TextureImporter:
         y: 0
         width: 100
         height: 100
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.4, y: 0.52}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -16, y: 12}
-        - {x: -16, y: -3}
-        - {x: -14, y: -4}
-        - {x: 4, y: -4}
-        - {x: 20, y: 0}
-        - {x: 20, y: 12}
+      - - {x: -6, y: 10}
+        - {x: -6, y: -5}
+        - {x: -4, y: -6}
+        - {x: 14, y: -6}
+        - {x: 30, y: -2}
+        - {x: 30, y: 10}
     - name: Reloading_6
       rect:
         serializedVersion: 2
@@ -169,17 +170,17 @@ TextureImporter:
         y: 0
         width: 100
         height: 100
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.4, y: 0.52}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -13, y: 12}
-        - {x: -16, y: 10}
-        - {x: -16, y: -4}
-        - {x: 1, y: -4}
-        - {x: 23, y: -1}
-        - {x: 24, y: 2}
-        - {x: 24, y: 12}
+      - - {x: -3, y: 10}
+        - {x: -6, y: 8}
+        - {x: -6, y: -6}
+        - {x: 11, y: -6}
+        - {x: 33, y: -3}
+        - {x: 34, y: 0}
+        - {x: 34, y: 10}
     outline: []
   spritePackingTag: 
   userData: 

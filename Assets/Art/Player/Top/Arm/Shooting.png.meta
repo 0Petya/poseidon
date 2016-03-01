@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 08d0a43ecd95eeb45854ab780db22a10
-timeCreated: 1456452087
+timeCreated: 1456807658
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -60,16 +60,16 @@ TextureImporter:
         y: 0
         width: 100
         height: 100
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.4, y: 0.52}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -16, y: 8}
-        - {x: -16, y: -8}
-        - {x: 14, y: -8}
-        - {x: 16, y: -7}
-        - {x: 16, y: 6}
-        - {x: 14, y: 8}
+      - - {x: -6, y: 6}
+        - {x: -6, y: -10}
+        - {x: 24, y: -10}
+        - {x: 26, y: -9}
+        - {x: 26, y: 4}
+        - {x: 24, y: 6}
     - name: Shooting_1
       rect:
         serializedVersion: 2
@@ -77,16 +77,16 @@ TextureImporter:
         y: 0
         width: 100
         height: 100
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.4, y: 0.52}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -20, y: 8}
-        - {x: -20, y: -4}
-        - {x: -15, y: -8}
-        - {x: 8, y: -8}
-        - {x: 12, y: -4}
-        - {x: 12, y: 8}
+      - - {x: -10, y: 6}
+        - {x: -10, y: -6}
+        - {x: -5, y: -10}
+        - {x: 18, y: -10}
+        - {x: 22, y: -6}
+        - {x: 22, y: 6}
     - name: Shooting_2
       rect:
         serializedVersion: 2
@@ -94,16 +94,16 @@ TextureImporter:
         y: 0
         width: 100
         height: 100
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.4, y: 0.52}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -16, y: 8}
-        - {x: -16, y: -8}
-        - {x: 14, y: -8}
-        - {x: 16, y: -7}
-        - {x: 16, y: 6}
-        - {x: 14, y: 8}
+      - - {x: -6, y: 6}
+        - {x: -6, y: -10}
+        - {x: 24, y: -10}
+        - {x: 26, y: -9}
+        - {x: 26, y: 4}
+        - {x: 24, y: 6}
     outline: []
   spritePackingTag: 
   userData: 

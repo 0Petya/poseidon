@@ -21,6 +21,7 @@ public class Player : MonoBehaviour {
 	private int stance;
 	private AudioSource[] aSources;
 	private LedgeCheck ledgeCheck;
+	private GameObject arm;
 	private Weapon weapon;
 
 	void Start() {
@@ -40,9 +41,13 @@ public class Player : MonoBehaviour {
 		}
 
 		ledgeCheck = GetComponentInChildren<LedgeCheck>();
+
+		arm = GameObject.Find("Arm");
+		arm.transform.localPosition = new Vector3(-0.1f, 0.02f, 0);
+
 		currentWeapon = Instantiate(currentWeapon, transform.position, Quaternion.identity) as GameObject;
 		currentWeapon.transform.parent = gameObject.transform;
-		currentWeapon.transform.localPosition = Vector3.zero;
+		currentWeapon.transform.localPosition = new Vector3(-0.1f, 0.02f, 0);
 		weapon = currentWeapon.GetComponent<Weapon>();
 	}
 
@@ -102,6 +107,17 @@ public class Player : MonoBehaviour {
 	void KeepPlaying(int i) {
 		if (!aSources[i].isPlaying)
 			aSources[i].Play();
+	}
+
+	void ResetAim() {
+		arm.transform.localRotation = transform.localRotation;
+	}
+
+	void Diag(bool up) {
+		float x = transform.localRotation.x;
+		float y = transform.localRotation.y;
+		float z = up ? 45f : -45f;
+		arm.transform.localRotation = Quaternion.Euler(x, y, z);
 	}
 
 	void StandUp() {
@@ -242,7 +258,20 @@ public class Player : MonoBehaviour {
 					aSources[3].Stop();
 				}
 			}
-			
+
+			if (controller.diag == 1) {
+				weapon.Diag(true);
+				Diag(true);
+			}
+			else if (controller.diag == -1) {
+				weapon.Diag(false);
+				Diag(false);
+			}
+			else {
+				weapon.ResetAim();
+				ResetAim();
+			}
+
 			if (weapon.IsAuto()) {
 				if (controller.shooting && weapon.GetAmmo() > 0) {
 					animator.SetBool("shooting", true);

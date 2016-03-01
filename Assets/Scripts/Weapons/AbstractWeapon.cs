@@ -32,6 +32,17 @@ abstract class AbstractWeapon : MonoBehaviour, Weapon {
 		return ammo;
 	}
 
+	public void ResetAim() {
+		transform.localRotation = transform.parent.localRotation;
+	}
+
+	public void Diag(bool up) {
+		float x = transform.localRotation.x;
+		float y = transform.localRotation.y;
+		float z = up ? 45f : -45f;
+		transform.localRotation = Quaternion.Euler(x, y, z);
+	}
+
 	public void Shoot(bool trigger) {
 		if (trigger)
 			animator.SetBool("shooting", true);

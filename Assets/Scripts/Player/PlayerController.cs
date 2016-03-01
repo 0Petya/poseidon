@@ -6,13 +6,14 @@ public class PlayerController : MonoBehaviour {
 	public int stance;
 	public bool down;
 	public bool jumping;
+	public int diag;
 	public bool shooting;
 	public bool reloading;
 	public bool sWalking;
 	public bool sShooting;
 
 	void Update() {
-		walking = stance = 0;
+		walking = stance = diag = 0;
 		down = jumping = shooting = reloading = false;
 		sWalking = sShooting = false;
 
@@ -35,6 +36,11 @@ public class PlayerController : MonoBehaviour {
 
 		if (Input.GetKeyDown(KeyCode.K))
 			jumping = true;
+
+		if (Input.GetKey(KeyCode.E))
+			diag = 1;
+		else if (Input.GetKey(KeyCode.Q))
+			diag = -1;
 
 		if (Input.GetKey(KeyCode.J))
 			shooting = true;

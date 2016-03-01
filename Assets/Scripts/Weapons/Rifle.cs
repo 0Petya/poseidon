@@ -9,7 +9,10 @@ class Rifle : AbstractWeapon {
 	override public void FireWeapon() {
 		float rayX = transform.position.x;
 		float rayY = transform.position.y + 0.085f;
-		Vector2 direction = new Vector2(transform.parent.localScale.x, 0);
+
+		float angle = Mathf.Deg2Rad * transform.localRotation.eulerAngles.z;
+		Vector2 direction = new Vector2(transform.parent.localScale.x * Mathf.Cos(angle), Mathf.Sin(angle));
+
 		RaycastHit2D hit = Physics2D.Raycast(new Vector2(rayX, rayY), direction);
 
 		float posX = hit.point.x + (transform.parent.localScale.x > 0 ? -0.5f : 0.5f);
