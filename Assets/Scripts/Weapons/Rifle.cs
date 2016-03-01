@@ -13,12 +13,13 @@ class Rifle : AbstractWeapon {
 		RaycastHit2D hit = Physics2D.Raycast(new Vector2(rayX, rayY), direction);
 
 		float posX = hit.point.x + (transform.parent.localScale.x > 0 ? -0.5f : 0.5f);
-		float posY = hit.point.y + (transform.parent.localScale.x > 0 ? -0.02f : 0.05f);
-		Quaternion rotation = Quaternion.Euler(0, 0, (transform.parent.localScale.x > 0 ? 0: 180));
+		float posY = hit.point.y - 0.02f;
 
 		if (hit.collider != null && hit.collider.gameObject.CompareTag("Solid")) {
-			if (!GameObject.Find("Decal(Clone)"))
-				Instantiate(decal, new Vector2(posX, posY), rotation);
+			if (!GameObject.Find("Decal(Clone)")) {
+				Decal iDecal = Instantiate(decal, new Vector2(posX, posY), Quaternion.identity) as Decal;
+				iDecal.transform.localScale = transform.parent.localScale;
+			}
 		}
 
 		aSources[0].Play();

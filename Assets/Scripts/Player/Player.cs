@@ -163,23 +163,25 @@ public class Player : MonoBehaviour {
 	}
 
 	void WallControl() {
-		if (onWallL) {
-			if (controller.walking > 0 && controller.jumping) {
-				if (lastCol == "right" || lastCol == "ground")
-					rb.velocity = new Vector2(rb.velocity.x, 0);
+		if (!hanging) {
+			if (onWallL) {
+				if (controller.walking > 0 && controller.jumping) {
+					if (lastCol == "right" || lastCol == "ground")
+						rb.velocity = new Vector2(rb.velocity.x, 0);
 
-				rb.AddForce(new Vector2(100, jumpForce * 75));
-				lastCol = "left";
+					rb.AddForce(new Vector2(100, jumpForce * 75));
+					lastCol = "left";
+				}
 			}
-		}
 
-		if (onWallR) {
-			if (controller.walking < 0 && controller.jumping) {
-				if (lastCol == "left" || lastCol == "ground")
-					rb.velocity = new Vector2(rb.velocity.x, 0);
+			if (onWallR) {
+				if (controller.walking < 0 && controller.jumping) {
+					if (lastCol == "left" || lastCol == "ground")
+						rb.velocity = new Vector2(rb.velocity.x, 0);
 
-				rb.AddForce(new Vector2(-100, jumpForce * 75));
-				lastCol = "right";
+					rb.AddForce(new Vector2(-100, jumpForce * 75));
+					lastCol = "right";
+				}
 			}
 		}
 	}
@@ -220,27 +222,27 @@ public class Player : MonoBehaviour {
 		WallControl();
 		HangingControl();
 
-		if (controller.walking != 0)
-			transform.localScale = new Vector3(controller.walking, 1, 1);
-
-		if (controller.walking != 0) {
-			velX = Mathf.MoveTowards(rb.velocity.x, speed * controller.walking, 50f * Time.deltaTime);
-
-			animator.SetBool("walking", true);
-			PlayOnce(2, controller.sWalking);
-			KeepPlaying(3);
-			StandUp();
-		}
-		else {
-			velX = Mathf.MoveTowards(rb.velocity.x, 0f, 4f * Time.deltaTime);
-
-			if (absVelX < 0.1f) {
-				animator.SetBool("walking", false);
-				aSources[3].Stop();
-			}
-		}
-
 		if (!hanging) {
+			if (controller.walking != 0)
+				transform.localScale = new Vector3(controller.walking, 1, 1);
+
+			if (controller.walking != 0) {
+				velX = Mathf.MoveTowards(rb.velocity.x, speed * controller.walking, 50f * Time.deltaTime);
+
+				animator.SetBool("walking", true);
+				PlayOnce(2, controller.sWalking);
+				KeepPlaying(3);
+				StandUp();
+			}
+			else {
+				velX = Mathf.MoveTowards(rb.velocity.x, 0f, 4f * Time.deltaTime);
+
+				if (absVelX < 0.1f) {
+					animator.SetBool("walking", false);
+					aSources[3].Stop();
+				}
+			}
+			
 			if (weapon.IsAuto()) {
 				if (controller.shooting && weapon.GetAmmo() > 0) {
 					animator.SetBool("shooting", true);
