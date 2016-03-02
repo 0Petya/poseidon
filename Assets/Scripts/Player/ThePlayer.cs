@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Linq;
+using Rewired;
 
-public class Player : MonoBehaviour {
+public class ThePlayer : MonoBehaviour {
 	public float speed = 2f;
 	public float jumpForce = 2.5f;
 	public AudioClip[] clips;
@@ -19,7 +20,6 @@ public class Player : MonoBehaviour {
 	private bool onWallR;
 	private string lastCol;
 	private int stance;
-	private bool aimNull;
 	private AudioSource[] aSources;
 	private LedgeCheck ledgeCheck;
 	private GameObject arm;
@@ -112,11 +112,9 @@ public class Player : MonoBehaviour {
 
 	void ResetAim() {
 		arm.transform.localRotation = transform.localRotation;
-		aimNull = true;
 	}
 
 	void Diag(bool up) {
-		aimNull = false;
 		float x = transform.localRotation.x;
 		float y = transform.localRotation.y;
 		float z = up ? 45f : -45f;
@@ -124,7 +122,6 @@ public class Player : MonoBehaviour {
 	}
 
 	void Vert(bool up) {
-		aimNull = false;
 		float x = transform.localRotation.x;
 		float y = transform.localRotation.y;
 		float z = up ? 90f : -90f;
@@ -323,9 +320,11 @@ public class Player : MonoBehaviour {
 					weapon.DryFire();
 			}
 
-			if (controller.reloading && aimNull && !controller.shooting) {
+			if (controller.reloading && !controller.shooting) {
 				animator.SetBool("reloading", true);
 				weapon.BeginReload();
+				weapon.ResetAim();
+				ResetAim();
 			}
 		}
 

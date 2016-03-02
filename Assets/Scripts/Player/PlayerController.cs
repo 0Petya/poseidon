@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Rewired;
 
 public class PlayerController : MonoBehaviour {
 	public int walking;
@@ -14,47 +15,53 @@ public class PlayerController : MonoBehaviour {
 	public bool sWalking;
 	public bool sShooting;
 
+	private Player controls;
+
+	void Start() {
+		controls = ReInput.players.GetPlayer(0);
+	}
+
 	void Update() {
 		walking = stance = 0;
 		up = down = diagUp = diagDown = jumping = shooting = reloading = false;
 		sWalking = sShooting = false;
 
-		if (Input.GetKey(KeyCode.D))
+		if (controls.GetButton("WalkRight"))
 			walking = 1;
-		else if (Input.GetKey(KeyCode.A))
+		else if (controls.GetButton("WalkLeft"))
 			walking = -1;
 
-		if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.A))
+		if (controls.GetButtonDown("WalkRight") || controls.GetButtonDown("WalkLeft"))
 			sWalking = true;
 
-		if (Input.GetKey(KeyCode.W))
+		if (controls.GetButton("StanceUp"))
 			up = true;
 
-		if (Input.GetKeyDown(KeyCode.W))
+		if (controls.GetButtonDown("StanceUp"))
 			stance = 1;
 
-		if (Input.GetKey(KeyCode.S))
+		if (controls.GetButton("StanceDown"))
 			down = true;
 
-		if (Input.GetKeyDown(KeyCode.S))
+		if (controls.GetButtonDown("StanceDown"))
 			stance = -1;
 
-		if (Input.GetKey(KeyCode.E))
+		if (controls.GetButton("AimDiagUp"))
 			diagUp = true;
 		
-		if (Input.GetKey(KeyCode.Q))
+		if (controls.GetButton("AimDiagDown"))
 			diagDown = true;
 
-		if (Input.GetKeyDown(KeyCode.K))
+		if (controls.GetButtonDown("Jump"))
 			jumping = true;
 
-		if (Input.GetKey(KeyCode.J))
+		if (controls.GetButton("Shoot"))
 			shooting = true;
 
-		if (Input.GetKeyDown(KeyCode.J))
+		if (controls.GetButtonDown("Shoot"))
 			sShooting = true;
 
-		if (Input.GetKeyDown(KeyCode.R))
+		if (controls.GetButtonDown("Reload"))
 			reloading = true;
 	}
 }
