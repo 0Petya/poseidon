@@ -221,7 +221,7 @@ public class ThePlayer : MonoBehaviour {
 	}
 
 	void WallControl() {
-		if (!hanging) {
+		if (!hanging && !onGround) {
 			if (onWallL) {
 				if (controller.walking > 0 && controller.jumping) {
 					if (lastCol == "right" || lastCol == "ground")
@@ -278,7 +278,6 @@ public class ThePlayer : MonoBehaviour {
 
 		GroundControl();
 		WallControl();
-		HangingControl();
 
 		if (!hanging) {
 			if (controller.walking != 0)
@@ -356,5 +355,9 @@ public class ThePlayer : MonoBehaviour {
 	void Update() {
 		StanceUpdate();
 		ControlAndAnimation();
+	}
+
+	void FixedUpdate() {
+		HangingControl();
 	}
 }
