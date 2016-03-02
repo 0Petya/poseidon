@@ -6,6 +6,7 @@ public interface Weapon {
 	int GetAmmo();
 	void ResetAim();
 	void Diag(bool up);
+	void Vert(bool up);
 	void Shoot(bool trigger);
 	void Fire();
 	void DryFire();

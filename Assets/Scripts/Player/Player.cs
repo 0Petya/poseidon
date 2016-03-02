@@ -19,6 +19,7 @@ public class Player : MonoBehaviour {
 	private bool onWallR;
 	private string lastCol;
 	private int stance;
+	private bool aimNull;
 	private AudioSource[] aSources;
 	private LedgeCheck ledgeCheck;
 	private GameObject arm;
@@ -111,13 +112,56 @@ public class Player : MonoBehaviour {
 
 	void ResetAim() {
 		arm.transform.localRotation = transform.localRotation;
+		aimNull = true;
 	}
 
 	void Diag(bool up) {
+		aimNull = false;
 		float x = transform.localRotation.x;
 		float y = transform.localRotation.y;
 		float z = up ? 45f : -45f;
 		arm.transform.localRotation = Quaternion.Euler(x, y, z);
+	}
+
+	void Vert(bool up) {
+		aimNull = false;
+		float x = transform.localRotation.x;
+		float y = transform.localRotation.y;
+		float z = up ? 90f : -90f;
+		arm.transform.localRotation = Quaternion.Euler(x, y, z);
+	}
+
+	void AimControl() {
+		if (!animator.GetBool("reloading")) {
+			if (controller.walking != 0 && controller.up) {
+				weapon.Diag(true);
+				Diag(true);
+			}
+			else if (controller.walking != 0 && controller.down) {
+				weapon.Diag(false);
+				Diag(false);
+			}
+			else if (controller.down && !onGround && stance == 2) {
+				weapon.Vert(false);
+				Vert(false);
+			}
+			else if (controller.up || (controller.diagUp && controller.diagDown)) {
+				weapon.Vert(true);
+				Vert(true);
+			}
+			else if (controller.diagUp) {
+				weapon.Diag(true);
+				Diag(true);
+			}
+			else if (controller.diagDown) {
+				weapon.Diag(false);
+				Diag(false);
+			}
+			else {
+				weapon.ResetAim();
+				ResetAim();
+			}
+		}
 	}
 
 	void StandUp() {
@@ -125,6 +169,12 @@ public class Player : MonoBehaviour {
 			stance = 2;
 			animator.SetBool("crouching", false);
 		}
+	}
+
+	IEnumerator LetGo() {
+		ledgeCheck.Grab(false);
+		yield return new WaitForSeconds(0.1f);
+		ledgeCheck.Grab(true);
 	}
 
 	void FullMode(bool change) {
@@ -144,12 +194,6 @@ public class Player : MonoBehaviour {
 		}
 	}
 
-	IEnumerator LetGo() {
-		ledgeCheck.Grab(false);
-		yield return new WaitForSeconds(0.1f);
-		ledgeCheck.Grab(true);
-	}
-
 	void HangingControl() {
 		if (ledgeCheck.IsLedge())
 			hanging = true;
@@ -157,6 +201,7 @@ public class Player : MonoBehaviour {
 			hanging = false;
 		
 		if (hanging) {
+			animator.SetBool("reloading", false);
 			rb.velocity = new Vector2(rb.velocity.x, 0);
 			rb.gravityScale = 0;
 
@@ -259,18 +304,7 @@ public class Player : MonoBehaviour {
 				}
 			}
 
-			if (controller.diag == 1) {
-				weapon.Diag(true);
-				Diag(true);
-			}
-			else if (controller.diag == -1) {
-				weapon.Diag(false);
-				Diag(false);
-			}
-			else {
-				weapon.ResetAim();
-				ResetAim();
-			}
+			AimControl();
 
 			if (weapon.IsAuto()) {
 				if (controller.shooting && weapon.GetAmmo() > 0) {
@@ -289,7 +323,7 @@ public class Player : MonoBehaviour {
 					weapon.DryFire();
 			}
 
-			if (controller.reloading) {
+			if (controller.reloading && aimNull && !controller.shooting) {
 				animator.SetBool("reloading", true);
 				weapon.BeginReload();
 			}
@@ -299,21 +333,23 @@ public class Player : MonoBehaviour {
 	}
 
 	void StanceUpdate() {
-		if (controller.stance == 1) {
-			if (stance < 2) {
-				stance++;
+		if (onGround) {
+			if (controller.stance == 1) {
+				if (stance < 2) {
+					stance++;
 
-				if (onGround && controller.walking == 0)
-					PlayOnce(2, controller.stance != 0);
+					if (onGround && controller.walking == 0)
+						PlayOnce(2, controller.stance != 0);
+				}
 			}
-		}
 
-		if (controller.stance == -1) {
-			if (stance > 1) {
-				stance--;
+			if (controller.stance == -1) {
+				if (stance > 1) {
+					stance--;
 
-				if (onGround && controller.walking == 0)
-					PlayOnce(2, controller.stance != 0);
+					if (onGround && controller.walking == 0)
+						PlayOnce(2, controller.stance != 0);
+				}
 			}
 		}
 	}

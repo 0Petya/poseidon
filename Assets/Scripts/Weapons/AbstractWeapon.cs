@@ -43,6 +43,13 @@ abstract class AbstractWeapon : MonoBehaviour, Weapon {
 		transform.localRotation = Quaternion.Euler(x, y, z);
 	}
 
+	public void Vert(bool up) {
+		float x = transform.localRotation.x;
+		float y = transform.localRotation.y;
+		float z = up ? 90f : -90f;
+		transform.localRotation = Quaternion.Euler(x, y, z);
+	}
+
 	public void Shoot(bool trigger) {
 		if (trigger)
 			animator.SetBool("shooting", true);
