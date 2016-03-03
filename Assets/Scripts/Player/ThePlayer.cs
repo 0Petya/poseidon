@@ -192,15 +192,8 @@ public class ThePlayer : MonoBehaviour {
 	}
 
 	void HangingControl() {
-		if (ledgeCheck.IsLedge())
-			hanging = true;
-		else
-			hanging = false;
-		
 		if (hanging) {
 			animator.SetBool("reloading", false);
-			rb.velocity = new Vector2(rb.velocity.x, 0);
-			rb.gravityScale = 0;
 
 			FullMode(true);
 			animator.SetBool("hanging", true);
@@ -210,11 +203,9 @@ public class ThePlayer : MonoBehaviour {
 				StartCoroutine(LetGo());
 			}
 			else if (controller.jumping)
-				rb.AddForce(new Vector2(0, jumpForce * 90f));
+				iHangJump = true;
 		}
 		else {
-			rb.gravityScale = 1f;
-
 			FullMode(false);
 			animator.SetBool("hanging", false);
 		}
@@ -225,9 +216,9 @@ public class ThePlayer : MonoBehaviour {
 			if (onWallL) {
 				if (controller.walking > 0 && controller.jumping) {
 					if (lastCol == "right" || lastCol == "ground")
-						rb.velocity = new Vector2(rb.velocity.x, 0);
+						resetVelY = true;
 
-					rb.AddForce(new Vector2(100, jumpForce * 75));
+					iWallJump = 1;
 					lastCol = "left";
 				}
 			}
@@ -235,9 +226,9 @@ public class ThePlayer : MonoBehaviour {
 			if (onWallR) {
 				if (controller.walking < 0 && controller.jumping) {
 					if (lastCol == "left" || lastCol == "ground")
-						rb.velocity = new Vector2(rb.velocity.x, 0);
+						resetVelY = true;
 
-					rb.AddForce(new Vector2(-100, jumpForce * 75));
+					iWallJump = -1;
 					lastCol = "right";
 				}
 			}
@@ -249,7 +240,7 @@ public class ThePlayer : MonoBehaviour {
 			animator.SetBool("jumping", false);
 
 			if (controller.jumping) {
-				rb.AddForce(new Vector2(0, jumpForce * 100));
+				iGroundJump = true;
 				StandUp();
 			}
 
@@ -278,13 +269,14 @@ public class ThePlayer : MonoBehaviour {
 
 		GroundControl();
 		WallControl();
+		HangingControl();
 
 		if (!hanging) {
 			if (controller.walking != 0)
 				transform.localScale = new Vector3(controller.walking, 1, 1);
 
 			if (controller.walking != 0) {
-				velX = Mathf.MoveTowards(rb.velocity.x, speed * controller.walking, 50f * Time.deltaTime);
+				iWalking = 1;
 
 				animator.SetBool("walking", true);
 				PlayOnce(2, controller.sWalking);
@@ -292,7 +284,7 @@ public class ThePlayer : MonoBehaviour {
 				StandUp();
 			}
 			else {
-				velX = Mathf.MoveTowards(rb.velocity.x, 0f, 4f * Time.deltaTime);
+				iWalking = -1;
 
 				if (absVelX < 0.1f) {
 					animator.SetBool("walking", false);
@@ -326,8 +318,6 @@ public class ThePlayer : MonoBehaviour {
 				ResetAim();
 			}
 		}
-
-		rb.velocity = new Vector2(velX, rb.velocity.y);
 	}
 
 	void StanceUpdate() {
@@ -357,7 +347,55 @@ public class ThePlayer : MonoBehaviour {
 		ControlAndAnimation();
 	}
 
+	private bool iHangJump;
+	private bool resetVelY;
+	private int iWallJump;
+	private bool iGroundJump;
+	private int iWalking;
+
 	void FixedUpdate() {
-		HangingControl();
+		if (ledgeCheck.IsLedge())
+			hanging = true;
+		else
+			hanging = false;
+
+		if (hanging) {
+			rb.velocity = new Vector2(rb.velocity.x, 0);
+			rb.gravityScale = 0;
+		}
+		else
+			rb.gravityScale = 1f;
+
+		if (iHangJump) {
+			rb.AddForce(new Vector2(0, jumpForce * 90f));
+			iHangJump = false;
+		}
+
+		if (resetVelY) {
+			rb.velocity = new Vector2(rb.velocity.x, 0);
+			resetVelY = false;
+		}
+
+		if (iWallJump != 0) {
+			rb.AddForce(new Vector2(100 * iWallJump, jumpForce * 75));
+			iWallJump = 0;
+		}
+
+		if (iGroundJump) {
+			rb.AddForce(new Vector2(0, jumpForce * 100));
+			iGroundJump = false;
+		}
+
+		if (iWalking != 0) {
+			if (iWalking == 1)
+				velX = Mathf.MoveTowards(rb.velocity.x, speed * controller.walking, 50f * Time.deltaTime);
+
+			if (iWalking == -1)
+				velX = Mathf.MoveTowards(rb.velocity.x, 0f, 4f * Time.deltaTime);
+
+			iWalking = 0;
+		}
+
+		rb.velocity = new Vector2(velX, rb.velocity.y);
 	}
 }
