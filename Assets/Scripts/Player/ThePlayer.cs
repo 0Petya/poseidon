@@ -44,7 +44,6 @@ public class ThePlayer : MonoBehaviour {
 		ledgeCheck = GetComponentInChildren<LedgeCheck>();
 
 		arm = GameObject.Find("Arm");
-		arm.transform.localPosition = new Vector3(-0.1f, 0.02f, 0);
 
 		currentWeapon = Instantiate(currentWeapon, transform.position, Quaternion.identity) as GameObject;
 		currentWeapon.transform.parent = gameObject.transform;
@@ -192,6 +191,8 @@ public class ThePlayer : MonoBehaviour {
 	}
 
 	void HangingControl() {
+		hanging = ledgeCheck.IsLedge();
+
 		if (hanging) {
 			animator.SetBool("reloading", false);
 
@@ -354,11 +355,6 @@ public class ThePlayer : MonoBehaviour {
 	private int iWalking;
 
 	void FixedUpdate() {
-		if (ledgeCheck.IsLedge())
-			hanging = true;
-		else
-			hanging = false;
-
 		if (hanging) {
 			rb.velocity = new Vector2(rb.velocity.x, 0);
 			rb.gravityScale = 0;
