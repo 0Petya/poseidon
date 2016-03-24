@@ -6,13 +6,17 @@ abstract class AbstractWeapon : MonoBehaviour, Weapon {
 	public AmmoCount ammoCount = null;
 	public Decal decal = null;
 	public AudioClip[] clips = null;
+	public GameObject bulletObj = null;
 
 	protected int ammo;
+	protected SpriteRenderer renderer;
 	protected Animator animator;
 	protected AudioSource[] aSources;
+	protected Bullet bullet;
 
 	protected void Start() {
 		ammo = maxAmmo;
+		renderer = GetComponent<SpriteRenderer>();
 		animator = GetComponent<Animator>();
 		Instantiate(ammoCount, new Vector2(0, 0), Quaternion.identity);
 
@@ -24,6 +28,8 @@ abstract class AbstractWeapon : MonoBehaviour, Weapon {
 			aSources[i] = child.AddComponent<AudioSource>() as AudioSource;
 			aSources[i].clip = clips[i];
 		}
+
+		bullet = bulletObj.GetComponent<Bullet>();
 	}
 
 	abstract public bool IsAuto();

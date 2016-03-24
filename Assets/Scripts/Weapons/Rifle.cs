@@ -7,23 +7,10 @@ class Rifle : AbstractWeapon {
 	}
 
 	override public void FireWeapon() {
-		float rayX = transform.position.x;
-		float rayY = transform.position.y + 0.085f;
-
-		float angle = Mathf.Deg2Rad * transform.localRotation.eulerAngles.z;
-		Vector2 direction = new Vector2(transform.parent.localScale.x * Mathf.Cos(angle), Mathf.Sin(angle));
-
-		RaycastHit2D hit = Physics2D.Raycast(new Vector2(rayX, rayY), direction);
-
-		float posX = hit.point.x + (transform.parent.localScale.x > 0 ? -0.5f : 0.5f);
-		float posY = hit.point.y - 0.02f;
-
-		if (hit.collider != null && hit.collider.gameObject.CompareTag("Solid")) {
-			if (!GameObject.Find("Decal(Clone)")) {
-				Decal iDecal = Instantiate(decal, new Vector2(posX, posY), Quaternion.identity) as Decal;
-				iDecal.transform.localScale = transform.parent.localScale;
-			}
-		}
+		GameObject round = Instantiate(bulletObj, transform.position, transform.rotation) as GameObject;
+		round.transform.SetParent(transform, true);
+		round.transform.localPosition = new Vector3(0.5f, 0.05f, 0);
+		round.GetComponent<Bullet>().Fire(10f, transform.parent.localScale.x > 0 ? false : true);
 
 		aSources[0].Play();
 		ammo--;
