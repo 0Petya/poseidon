@@ -14,17 +14,13 @@ public class Bullet : MonoBehaviour {
 		transform.parent = null;
     transform.localScale = new Vector3(1, 1, 1);
 
-		float angle = transform.rotation.eulerAngles.z;
     if (flip) {
-      if (angle > 44 && angle < 46) angle = 135;
-      else if (angle > 314 && angle < 316) angle = 225;
-      else if (angle == 0) angle = 180;
+      transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, 180 - transform.rotation.eulerAngles.z);
 
       GetComponent<BoxCollider2D>().enabled = false;
       GetComponent<BoxCollider2D>().enabled = true;
     }
 
-    transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, angle);
 		GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Cos(transform.rotation.eulerAngles.z * Mathf.Deg2Rad), Mathf.Sin(transform.rotation.eulerAngles.z * Mathf.Deg2Rad)) * vel;
 	}
 }
