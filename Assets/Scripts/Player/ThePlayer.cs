@@ -58,11 +58,6 @@ public class ThePlayer : MonoBehaviour {
 			Vector3 contact = other.contacts[0].point;
 			Bounds bounds = oCollider.bounds;
 
-			if (contact.y >= bounds.max.y && contact.x >= bounds.min.x && contact.x <= bounds.max.x) {
-				onGround = true;
-				lastCol = "ground";
-			}
-
 			if (!onGround && contact.y > bounds.min.y && contact.y < bounds.max.y) {
 				if (contact.x >= bounds.max.x)
 					onWallL = true;
@@ -80,10 +75,8 @@ public class ThePlayer : MonoBehaviour {
 	}
 
 	void OnCollisionExit2D(Collision2D other) {
-		if (other.gameObject.CompareTag("Solid")) {
-			onGround = false;
+		if (other.gameObject.CompareTag("Solid"))
 			StartCoroutine(OffWall());
-		}
 	}
 
 	void FirstStep() {
@@ -321,6 +314,15 @@ public class ThePlayer : MonoBehaviour {
 		}
 	}
 
+  void GroundCheck() {
+    onGround = false;
+    RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector3.down, 1f);
+    if (hit.collider != null && hit.collider.gameObject.CompareTag("Solid")) {
+      onGround = true;
+      lastCol = "ground";
+    }
+  }
+
 	void StanceUpdate() {
 		if (onGround) {
 			if (controller.stance == 1) {
@@ -345,6 +347,7 @@ public class ThePlayer : MonoBehaviour {
 
 	void Update() {
 		StanceUpdate();
+    GroundCheck();
 		ControlAndAnimation();
 	}
 

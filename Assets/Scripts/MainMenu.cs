@@ -19,6 +19,9 @@ public class MainMenu : MonoBehaviour {
 	void Update() {
 		if (controls.GetButtonDown("Shoot") && !loadLock && !mapper.isOpen)
 			LoadScene();
+
+    if (controls.GetButtonDown("Pause"))
+      mapper.Open();
 	}
 
 	void LoadScene() {
