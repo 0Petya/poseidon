@@ -21,6 +21,15 @@ public static class Utils {
     return str;
   }
 
+  public static int[,] JagToMultidem(int[][] array, int xSize, int ySize) {
+    int[,] multidem = new int[xSize, ySize];
+    for (int x = 0; x < xSize; x++)
+      for (int y = 0; y < ySize; y++)
+        multidem[x, y] = array[ySize - 1 - y][x];
+
+    return multidem;
+  }
+
   public static bool Rand(float percentage) {
     return Random.Range(0f, 1f) <= percentage;
   }

@@ -1,26 +1,11 @@
 ﻿using UnityEngine;
 
-public struct Coords {
-  public int x, y;
-
-  public Coords(int x, int y) {
-    this.x = x;
-    this.y = y;
-  }
-
-  public void Right() { this.x++; }
-  public void Left() { this.x--; }
-  public void Up() { this.y++; }
-  public void Down() { this.y--; }
-}
-
-public class Generator : MonoBehaviour {
+public class LevelGenerator : MonoBehaviour {
   public int xSize;
   public int ySize;
   public float upProc;
   public float tunnelProc;
   public float turnProc;
-  public GameObject tile;
 
   private int[,] level;
   private int xEdge;
@@ -97,5 +82,6 @@ public class Generator : MonoBehaviour {
     mitad = xSize / 2;
 
     GenerateLevel();
+    GetComponent<RoomGenerator>().GenerateRooms(level);
   }
 }
