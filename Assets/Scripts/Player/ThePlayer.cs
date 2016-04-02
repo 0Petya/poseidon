@@ -7,6 +7,7 @@ public class ThePlayer : MonoBehaviour {
 	public float speed = 2f;
 	public float jumpForce = 2.5f;
 	public AudioClip[] clips;
+  public GameObject rewired;
 	public GameObject currentWeapon;
 
 	private PlayerController controller;
@@ -41,8 +42,8 @@ public class ThePlayer : MonoBehaviour {
 			aSources[i].clip = clips[i];
 		}
 
+    Instantiate(rewired, Vector3.zero, Quaternion.identity);
 		ledgeCheck = GetComponentInChildren<LedgeCheck>();
-
 		arm = GameObject.Find("Arm");
 
 		currentWeapon = Instantiate(currentWeapon, transform.position, Quaternion.identity) as GameObject;
@@ -57,6 +58,16 @@ public class ThePlayer : MonoBehaviour {
 		if (other.gameObject.CompareTag("Solid")) {
 			Vector3 contact = other.contacts[0].point;
 			Bounds bounds = oCollider.bounds;
+
+			if (contact.y >= bounds.max.y && contact.x >= bounds.min.x && contact.x <= bounds.max.x) {
+				onGround = true;
+				lastCol = "ground";
+			}
+
+			if (contact.y >= bounds.max.y && contact.x >= bounds.min.x && contact.x <= bounds.max.x) {
+				onGround = true;
+				lastCol = "ground";
+			}
 
 			if (!onGround && contact.y > bounds.min.y && contact.y < bounds.max.y) {
 				if (contact.x >= bounds.max.x)
@@ -75,8 +86,10 @@ public class ThePlayer : MonoBehaviour {
 	}
 
 	void OnCollisionExit2D(Collision2D other) {
-		if (other.gameObject.CompareTag("Solid"))
+		if (other.gameObject.CompareTag("Solid")) {
+			onGround = false;
 			StartCoroutine(OffWall());
+		}
 	}
 
 	void FirstStep() {
@@ -314,15 +327,6 @@ public class ThePlayer : MonoBehaviour {
 		}
 	}
 
-  void GroundCheck() {
-    onGround = false;
-    RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector3.down, 1f);
-    if (hit.collider != null && hit.collider.gameObject.CompareTag("Solid")) {
-      onGround = true;
-      lastCol = "ground";
-    }
-  }
-
 	void StanceUpdate() {
 		if (onGround) {
 			if (controller.stance == 1) {
@@ -347,7 +351,6 @@ public class ThePlayer : MonoBehaviour {
 
 	void Update() {
 		StanceUpdate();
-    GroundCheck();
 		ControlAndAnimation();
 	}
 
@@ -376,7 +379,7 @@ public class ThePlayer : MonoBehaviour {
 		}
 
 		if (iWallJump != 0) {
-			rb.AddForce(new Vector2(100 * iWallJump, jumpForce * 75));
+			rb.AddForce(new Vector2(100 * iWallJump, jumpForce * 100));
 			iWallJump = 0;
 		}
 

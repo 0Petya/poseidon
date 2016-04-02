@@ -72,11 +72,11 @@ public class LevelGenerator : MonoBehaviour {
       else pos.Right();
       if (pos.x != dest.x) level[pos.x, pos.y] = 1;
     }
-
-    print(Utils.Array2DToString(level));
   }
 
 	void Start() {
+    xSize = Manager.levelSize;
+    ySize = Manager.levelSize;
     xEdge = xSize - 1;
     yEdge = ySize - 1;
     mitad = xSize / 2;

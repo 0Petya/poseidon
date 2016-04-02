@@ -21,8 +21,8 @@ public static class Utils {
     return str;
   }
 
-  public static int[,] JagToMultidem(int[][] array, int xSize, int ySize) {
-    int[,] multidem = new int[xSize, ySize];
+  public static char[,] JagToMultidem(char[][] array, int xSize, int ySize) {
+    char[,] multidem = new char[xSize, ySize];
     for (int x = 0; x < xSize; x++)
       for (int y = 0; y < ySize; y++)
         multidem[x, y] = array[ySize - 1 - y][x];
@@ -40,5 +40,15 @@ public static class Utils {
       row[x] = array[x, rowID];
 
     return row;
+  }
+
+  public static Coords GetSpot(char[,] array) {
+    while (true) {
+      int x = Random.Range(0, array.GetLength(0));
+      int y = Random.Range(0, 2);
+      if (array[x, y] == '1' && array[x, y + 1] == '0') {
+        return new Coords(x, y + 1);
+      }
+    }
   }
 }
