@@ -10,6 +10,7 @@ enum Type {
 public class RoomGenerator : MonoBehaviour {
   public int xSize;
   public int ySize;
+  public int maxRooms;
   public GameObject player;
 
   private GameObject basicTile;
@@ -69,7 +70,8 @@ public class RoomGenerator : MonoBehaviour {
   }
 
   char[,] GetRoom(string name) {
-    TextAsset data = Resources.Load("Rooms/" + name + "P") as TextAsset;
+    TextAsset data = null;
+    while(!data) data = Resources.Load("Rooms/" + name + "P" + Random.Range(0, maxRooms)) as TextAsset;
 
     string[] rows = data.text.Split(new string[] { System.Environment.NewLine }, System.StringSplitOptions.None);
     if (Utils.Rand(0.5f))
@@ -85,7 +87,7 @@ public class RoomGenerator : MonoBehaviour {
   }
 
   public void GenerateRooms(int[,] level) {
-    string area = "A1R";
+    string area = "A1/";
     for (int y = 0; y < level.GetLength(1); y++)
       for (int x = 0; x < level.GetLength(0); x++) {
         string room = area;
