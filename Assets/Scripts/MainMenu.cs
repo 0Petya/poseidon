@@ -16,7 +16,6 @@ public class MainMenu : MonoBehaviour {
 	}
 
 	void Update() {
-    print(Manager.levelSize);
     if (!loadLock && !mapper.isOpen) {
       if (controls.GetButtonDown("2")) Manager.levelSize = 2;
       if (controls.GetButtonDown("3")) Manager.levelSize = 3;
